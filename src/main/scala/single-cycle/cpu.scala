@@ -45,6 +45,34 @@ class SingleCycleCPU(implicit val conf: CPUConfig) extends BaseCPU {
   }
 
   // Your code goes here
+  
+  //controll ins and outs
+  control.io.opcode := instruction(6,0)
+
+  aluControl.io.arth_type := control.io.arth_type
+  aluControl.io.int_length := control.io.int_length
+  aluControl.io.aluop := control.io.aluop
+
+
+  //aluControl unit ins and outs
+  aluControl.io.funct7 := instruction(31,25)
+  aluControl.io.funct3 := instruction(14, 12)
+
+  alu.io.operation := aluControl.io.operation
+
+  //alu ins and outs
+  alu.io.operand1 := registers.io.readdata1
+  alu.io.operand2 := registers.io.readdata2
+
+  registers.io.writedata := alu.io.result
+
+  //register files
+  registers.io.readreg1 := instruction(19,15)
+  registers.io.readreg2 := instruction(24,20)
+  registers.io.writereg := instruction(11,7)
+  registers.io.wen := (registers.io.writereg =/= 0.U) && (control.io.writeback_src =/= 0.U )
+  pc := pc + 4.U
+  // **** add mux(es) ****
 
 }
 
@@ -67,3 +95,21 @@ object SingleCycleCPUInfo {
     )
   }
 }
+
+
+/*
+// R-format 32-bit
+      BitPat("b0111011") -> List(     1.U,       0.U,         1.U,     0.U,   0.U,     0.U,     0.U,           1.U,       1.U),
+      
+
+
+      // I-format 64 bit
+
+      BitPat("b0010011") -> List(     1.U,       1.U,         0.U,     0.U,   0.U,     0.U,     1.U,           1.U,       1.U),   //ADDI
+      
+      
+      
+      // I-format 32 bit
+       BitPat("b0010011") -> List(1.U, 1.U, 0.U, 0.U, 0.U, 0.U, 1.U, 0.U, 1.U), // SLLI
+       BitPat("b0011011") -> List(1.U, 1.U, 0.U, 0.U, 0.U, 0.U, 1.U, 1.U, 1.U) // ADDIW
+       */

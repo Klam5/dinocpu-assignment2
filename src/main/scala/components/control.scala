@@ -65,8 +65,25 @@ class Control extends Module {
       Array(              /*        aluop, arth_type,     int_length,   jumpop, memop, op1_src, op2_src, writeback_src, validinst*/
       // R-format 64-bit
       BitPat("b0110011") -> List(     1.U,       0.U,         0.U,     0.U,   0.U,     0.U,     0.U,           1.U,       1.U),
-      // R-format 32-bit
-      BitPat("b0111011") -> List(     1.U,       0.U,         1.U,     0.U,   0.U,     0.U,     0.U,           1.U,       1.U)
+      
+
+      //i type
+      BitPat("b0010011") -> List(1.U, 1.U, 0.U, 0.U, 0.U, 0.U, 1.U, 1.U, 1.U), // ADDI
+      BitPat("b0000011") -> List(0.U, 1.U, 0.U, 0.U, 1.U, 0.U, 0.U, 1.U, 1.U), // LW
+
+      // I-format 32-bit
+      BitPat("b0011011") -> List(1.U, 1.U, 0.U, 0.U, 0.U, 0.U, 1.U, 1.U, 1.U), // ADDI (same as 64-bit)
+      BitPat("b0000011") -> List(0.U, 1.U, 0.U, 0.U, 1.U, 0.U, 0.U, 1.U, 1.U), // LW (same as 64-bit)
+      
+      // Additional I-type instructions
+      BitPat("b0010011") -> List(1.U, 1.U, 0.U, 0.U, 0.U, 0.U, 1.U, 0.U, 1.U), // SLLI
+      BitPat("b0010011") -> List(1.U, 1.U, 0.U, 0.U, 0.U, 0.U, 1.U, 0.U, 1.U), // SRLI
+      BitPat("b0010011") -> List(1.U, 1.U, 0.U, 0.U, 0.U, 0.U, 1.U, 0.U, 1.U), // SRAI
+      BitPat("b0011011") -> List(1.U, 1.U, 0.U, 0.U, 0.U, 0.U, 1.U, 1.U, 1.U), // ADDIW
+      BitPat("b0011011") -> List(1.U, 1.U, 0.U, 0.U, 0.U, 0.U, 1.U, 0.U, 1.U), // SLLIW
+      BitPat("b0011011") -> List(1.U, 1.U, 0.U, 0.U, 0.U, 0.U, 1.U, 0.U, 1.U), // SRLIW
+      BitPat("b0011011") -> List(1.U, 1.U, 0.U, 0.U, 0.U, 0.U, 1.U, 0.U, 1.U)  // SRAIW
+
       ) // Array
     ) // ListLookup
 
